@@ -14,7 +14,6 @@ class LogLevelFilter(logging.Filter):
 		return record.levelno == self.level
 
 
-
 # 日志分级别文件输出
 # create logger
 logger = logging.getLogger(__name__)
@@ -40,8 +39,6 @@ filemode = 'w'
 
 logging.basicConfig(level=logging.DEBUG, format=fromat, datefmt=datefmt, filename=filename, filemode=filemode)
 
-
-
 # 日志同时输出到控制台
 # 默认stderr.
 # console = logging.StreamHandler(sys.stderr) # sys.stdout
@@ -58,8 +55,6 @@ logging.warning('This is warning message')
 logging.error("This is error message")
 logging.critical("This is critical message")
 
-
-
 # 日志文件分割
 # # 定义一个RotatingFileHandler，最多备份5个日志文件，每个日志文件最大10M
 Rthandler = RotatingFileHandler(filename, maxBytes=10 * 1024 * 1024, backupCount=5)
@@ -68,8 +63,6 @@ formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
 Rthandler.setFormatter(formatter)
 # getLogger("logname") 是从配置文件中读取的. 这里用不到
 logging.getLogger().addHandler(Rthandler)
-
-
 
 # 每日凌晨分割日志
 trHandler = TimedRotatingFileHandler('timeRotating.log', when='MIDNIGHT', backupCount=10)

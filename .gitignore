@@ -1,5 +1,9 @@
 # 忽略所有路径下 log 文件夹及其子文件
 log
+venv/
+.idea/
+__pycache__/
+tmp/
 
 # 忽略所有路径下 *.log 文件
 *.log
