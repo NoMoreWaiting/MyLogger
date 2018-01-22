@@ -1,8 +1,20 @@
 import logging
 import os
+import sys
 import time
 from logging.handlers import RotatingFileHandler
 from logging.handlers import TimedRotatingFileHandler
+
+
+def getTrackInfo():
+	try:
+		raise Exception
+	except:
+		# sys.exc_info() return (type, value/message, traceback)
+		f = sys.exc_info()[2].tb_frame.f_back.f_back  # 简单封装下  后面在处理
+	finally:
+		return (f.f_code.co_filename, f.f_code.co_name, f.f_lineno)
+
 
 filePath = os.path.join(os.getcwd(), "../log")
 if not os.path.exists(filePath):
@@ -49,8 +61,9 @@ class SizeLogger(object):
 		error_file = RotatingFileHandler(error_filename, mode='a', maxBytes=maxBytes, backupCount=10, encoding='utf-8')
 
 		# 每行日志的前缀设置
+		# '%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s thread-%(thread)d: %(message)s'
 		formatter = logging.Formatter(
-			'%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s thread-%(thread)d: %(message)s')
+			'%(asctime)s %(levelname)s thread-%(thread)d %(message)s')
 		debug_file.setFormatter(formatter)
 		info_file.setFormatter(formatter)
 		error_file.setFormatter(formatter)
@@ -69,13 +82,13 @@ class SizeLogger(object):
 		SizeLogger.logger.addHandler(error_file)
 
 	def debug(self, *args, **kwargs):
-		SizeLogger.logger.debug(args, **kwargs)
+		SizeLogger.logger.debug("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 	def info(self, *args, **kwargs):
-		SizeLogger.logger.info(args, **kwargs)
+		SizeLogger.logger.info("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 	def error(self, *args, **kwargs):
-		SizeLogger.logger.error(args, **kwargs)
+		SizeLogger.logger.error("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 
 # 根据时间分割文件
@@ -99,8 +112,9 @@ class TimeLogger(object):
 		error_file = TimedRotatingFileHandler(error_filename, when='MIDNIGHT', backupCount=10, encoding='utf-8')
 
 		# 每行日志的前缀设置
+		# '%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s thread-%(thread)d: %(message)s'
 		formatter = logging.Formatter(
-			'%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s thread-%(thread)d: %(message)s')
+			'%(asctime)s %(levelname)s thread-%(thread)d %(message)s')
 		debug_file.setFormatter(formatter)
 		info_file.setFormatter(formatter)
 		error_file.setFormatter(formatter)
@@ -119,13 +133,13 @@ class TimeLogger(object):
 		TimeLogger.logger.addHandler(error_file)
 
 	def debug(self, *args, **kwargs):
-		TimeLogger.logger.debug(args, **kwargs)
+		TimeLogger.logger.debug("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 	def info(self, *args, **kwargs):
-		TimeLogger.logger.info(args, **kwargs)
+		TimeLogger.logger.info("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 	def error(self, *args, **kwargs):
-		TimeLogger.logger.error(args, **kwargs)
+		TimeLogger.logger.error("where:%s, msg:%s", getTrackInfo(), args, **kwargs)
 
 
 sizeLog = SizeLogger()
